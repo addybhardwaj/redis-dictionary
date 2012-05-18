@@ -77,8 +77,9 @@ public class RedisKeywordDataRepositoryTest extends AbstractRepositoryTest {
     public void testIndexDataByKeywords() throws Exception {
         setupTestData();
 
-        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("ba");
+        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "ba");
         LOGGER.info("ids found for ba [{}]", ids);
+        assertEquals(2, ids.size());
 
     }
 
@@ -86,18 +87,34 @@ public class RedisKeywordDataRepositoryTest extends AbstractRepositoryTest {
     public void testIndexDataByKeywordsMultiple() throws Exception {
         setupTestData();
 
-        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("ba", "fo");
+        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "ba", "fo");
         LOGGER.info("ids found for ba and fo [{}]", ids);
+        assertEquals(1, ids.size());
 
+    }
+
+    @Test
+    public void testIndexDataByCompleteKeyword() throws Exception {
+        setupTestData();
+
+        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "bar");
+        LOGGER.info("ids found for ba and fo [{}]", ids);
+        assertEquals(2, ids.size());
+    }
+
+    @Test
+    public void testIndexDataByCompleteKeywordsMultiple() throws Exception {
+        setupTestData();
+
+        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "bar", "foo");
+        LOGGER.info("ids found for ba and fo [{}]", ids);
+        assertEquals(1, ids.size());
     }
 
     private void setupTestData() {
         redisKeywordDataRepository.indexDataByKeywords("tmp", stringKeywordAndIdExtractor, "foo");
-
         redisKeywordDataRepository.indexDataByKeywords("tmp", stringKeywordAndIdExtractor, "bar");
-
         redisKeywordDataRepository.indexDataByKeywords("tmp", stringKeywordAndIdExtractor, "foo bar");
-
         redisKeywordDataRepository.indexDataByKeywords("tmp", stringKeywordAndIdExtractor, "random");
     }
 }

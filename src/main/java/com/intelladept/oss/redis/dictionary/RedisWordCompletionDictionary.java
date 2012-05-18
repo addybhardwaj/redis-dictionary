@@ -78,6 +78,11 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
 
         Long start = getDictionary(type).rank(prefix);
 
+        //if start is null then check if this is a complete word and try to find it
+        if (start == null) {
+            start = getDictionary(type).rank(prefix + END_TOKEN);
+        }
+
         LOGGER.info("Rank of prefix [{}] was [{}]", prefix, start);
 
         if (start != null) {
