@@ -16,7 +16,8 @@ join words like and, a, if, etc
 How to use this library in maven
 ------------------------
 
-```<dependency>
+```
+<dependency>
     <groupId>com.intelladept.oss.redis</groupId>
     <artifactId>redis-dictionary</artifactId>
     <!-- Note: use the most recent version available -->
