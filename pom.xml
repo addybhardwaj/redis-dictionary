@@ -4,7 +4,7 @@
 
     <groupId>com.intelladept.oss.redis</groupId>
     <artifactId>redis-dictionary</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>redis-dictionary</name>
@@ -15,6 +15,21 @@
         <spring.version>3.1.1.RELEASE</spring.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:git://github.com/addybhardwaj/redis-dictionary.git</connection>
+        <url>scm:git:git://github.com/addybhardwaj/redis-dictionary.git</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>https://repository-addy.forge.cloudbees.com/snapshot/</url>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <url>https://repository-addy.forge.cloudbees.com/snapshot/</url>
+        </repository>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>javax.inject</groupId>
