@@ -167,22 +167,22 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
         }
 
         @Override
-        public List<String> findWords(String dictionaryName, String prefix) {
+        public List<String> findWords(String dictionaryName, String searchKeyword) {
             List<String> results = new ArrayList<String>();
             
             for(RedisDictionary redisDictionary : redisDictionaries) {
-                results.addAll(redisDictionary.findWords(dictionaryName, prefix));
+                results.addAll(redisDictionary.findWords(dictionaryName, searchKeyword));
             }
             
             return results;
         }
 
         @Override
-        public List<String> findWords(String dictionaryName, String prefixToFind, int max) {
+        public List<String> findWords(String dictionaryName, String searchKeyword, int max) {
             List<String> results = new ArrayList<String>();
 
             for(RedisDictionary redisDictionary : redisDictionaries) {
-                results.addAll(redisDictionary.findWords(dictionaryName, prefixToFind, max));
+                results.addAll(redisDictionary.findWords(dictionaryName, searchKeyword, max));
             }
 
             return results;

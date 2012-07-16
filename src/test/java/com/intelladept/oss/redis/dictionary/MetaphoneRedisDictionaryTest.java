@@ -38,6 +38,10 @@ public class MetaphoneRedisDictionaryTest extends AbstractRepositoryTest {
         assertEquals(3, results.size());
         assertArrayEquals(new String[] {"cat", "kat", "kitty"}, results.toArray());
 
+        results = metaphoneRedisDictionary.findWords("tmp", "kat", 2);
+        assertEquals(2, results.size());
+        assertArrayEquals(new String[] {"cat", "kat"}, results.toArray());
+
         results = metaphoneRedisDictionary.findWords("tmp", "fctul");
         assertEquals(1, results.size());
     }

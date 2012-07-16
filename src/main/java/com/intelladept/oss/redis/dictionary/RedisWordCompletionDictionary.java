@@ -64,15 +64,15 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
 
 
     @Override
-    public List<String> findWords(String dictionaryName, String prefix) {
-        return findWords(dictionaryName, prefix, MAX_COUNT);
+    public List<String> findWords(String dictionaryName, String searchKeyword) {
+        return findWords(dictionaryName, searchKeyword, MAX_COUNT);
     }
 
 
     @Override
-    public List<String> findWords(String dictionaryName, final String prefixToFind, final int max) {
+    public List<String> findWords(String dictionaryName, final String searchKeyword, final int max) {
         Validate.isTrue(max <= MAX_COUNT);
-        String prefix = prefixToFind.toLowerCase();
+        String prefix = searchKeyword.toLowerCase();
 
         List<String> results = new ArrayList<String>();
 
