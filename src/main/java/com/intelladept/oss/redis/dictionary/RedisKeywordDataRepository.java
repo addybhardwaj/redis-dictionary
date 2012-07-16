@@ -124,7 +124,7 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
     private Long findDataByKeyword(String dictionaryName, String tmpResultSetKey, String keyword) {
         LOGGER.debug("Finding data for keyword prefix [{}]", keyword);
 
-        List<String> resultWords = redisDictionary.findWords(dictionaryName, keyword);
+        List<String> resultWords = redisDictionary.findWords(dictionaryName, keyword, RedisDictionary.MAX_COUNT);
         List<String> resultWordsSetKeys = buildSetKeys(dictionaryName, resultWords);
 
         if(CollectionUtils.isEmpty(resultWordsSetKeys)) {

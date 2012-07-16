@@ -41,6 +41,11 @@ public class RedisWordCompletionDictionaryTest extends AbstractRepositoryTest {
         assertEquals(2, results.size());
         assertTrue(results.contains("foo"));
         assertTrue(results.contains("foobar"));
+
+        results = redisWordCompletionDictionary.findWords("tmp", "fo", 1);
+        assertNotNull(results);
+        assertEquals(1, results.size());
+        assertTrue(results.contains("foo"));
     }
 
     @Test

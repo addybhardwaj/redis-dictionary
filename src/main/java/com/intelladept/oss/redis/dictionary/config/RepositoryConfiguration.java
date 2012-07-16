@@ -30,6 +30,12 @@ public class RepositoryConfiguration {
     @Value("#{repo.redispass}")
     private String password;
 
+    @Value("#{repo.redismaxactive}")
+    private int maxActive;
+
+    @Value("#{repo.redismaxwait}")
+    private long maxWait;
+
 
     @Bean
     public RedisTemplate redisTemplate() {
@@ -58,8 +64,8 @@ public class RepositoryConfiguration {
     @Bean
     public JedisPoolConfig poolConfig() {
     	JedisPoolConfig poolConfig = new JedisPoolConfig();
-    	poolConfig.setMaxActive(4);
-    	poolConfig.setMaxWait(30000); //30sec
+    	poolConfig.setMaxActive(maxActive);
+    	poolConfig.setMaxWait(maxWait); //30sec
     	return poolConfig;
     }
 

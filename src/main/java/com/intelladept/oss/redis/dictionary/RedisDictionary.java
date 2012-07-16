@@ -12,6 +12,8 @@ public interface RedisDictionary {
     String DICT = "dict:";
 
     String DEFAULT_DICTIONARY = "dflt";
+    int MAX_COUNT = 50;
+    int MAX_TRANS_UNIT = 50;
 
     /**
      * Adds a word to the dictionary.

@@ -48,7 +48,9 @@ public class MetaphoneRedisDictionary implements RedisDictionary {
 
     @Override
     public List<String> findWords(String dictionaryName, String searchKeyword, int max) {
-        if (max > 0) max--;
+        if (max > 0) {
+            max--;
+        }
         String metaphoneOfWord = metaphone.metaphone(searchKeyword);
         return new ArrayList<String> (getDictionary(dictionaryName, metaphoneOfWord).range(0, max));
     }

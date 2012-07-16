@@ -34,14 +34,16 @@ public class PhraseSplitter {
     }
 
     public Set<String> cleanseAndSplitPhrase(final String phrase, boolean preserveAll) {
-        if (phrase == null) return null;
+        if (phrase == null) {
+            return null;
+        }
         String cleansedPhrase = phrase.replaceAll(joinCharRegEx, " ");
         cleansedPhrase = cleansedPhrase.replaceAll(decoratingCharRegEx, StringUtils.EMPTY);
         cleansedPhrase = cleansedPhrase.trim();
         String[] words = StringUtils.split(cleansedPhrase);
         Set<String> cleansedWords = new TreeSet<String>();
-        if (preserveAll == false) {
-            if(ArrayUtils.isEmpty(words) == false ) {
+        if (!preserveAll) {
+            if(!ArrayUtils.isEmpty(words)) {
                 for(String word : words) {
                     if (word.length() > 2) {
                         cleansedWords.add(word);

@@ -26,10 +26,6 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
 
     private static final String END_TOKEN = "*";
 
-    private static final int MAX_COUNT = 50;
-
-    private static final int MAX_TRANS_UNIT = 50;
-
     @Inject
     private RedisTemplate stringRedisTemplate;
 
@@ -99,7 +95,7 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
                         //Also if entry doesn't have the same prefix
                         if (entry.length() < prefix.length()
                                 || entry.substring(0, prefix.length()).equals(prefix) == false
-                                || results.size() > max) {
+                                || results.size() >= max) {
                             LOGGER.info("Returning at prefix [{}]; end condition satisfied; ", entry);
                             return results;
 
