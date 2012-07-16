@@ -37,16 +37,16 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
     /**
      * TODO: cache the zset objects and lazily initial them.
      * 
-     * @param type
+     * @param dictionaryName
      * @return
      */
-    private RedisZSet<String> getDictionary(String type) {
-        return new DefaultRedisZSet<String>(DICT + "compl:" + type, stringRedisTemplate);
+    private RedisZSet<String> getDictionary(String dictionaryName) {
+        return new DefaultRedisZSet<String>(DICT + "compl:" + dictionaryName, stringRedisTemplate);
     }
     
 
     @Override
-    public void addWord(String type, final String wordToSave) {
+    public void addWord(String dictionaryName, final String wordToSave) {
         Validate.notNull(wordToSave);
         String word = wordToSave.toLowerCase();
 
@@ -54,40 +54,40 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
         //Add all the variants
         for (int i = 1; i < word.length(); i++) {
             prefix = word.substring(0, i);
-            getDictionary(type).add(prefix, 0);
+            getDictionary(dictionaryName).add(prefix, 0);
             LOGGER.debug("Added prefix [{}]", prefix);
         }
         //Add the full word with End prefix to identify full word
-        getDictionary(type).add(word + END_TOKEN, 0);
+        getDictionary(dictionaryName).add(word + END_TOKEN, 0);
         LOGGER.debug("Added word ** [{}]", word);
     }
 
 
     @Override
-    public List<String> findWords(String type, String prefix) {
-        return findWords(type, prefix, MAX_COUNT);
+    public List<String> findWords(String dictionaryName, String prefix) {
+        return findWords(dictionaryName, prefix, MAX_COUNT);
     }
 
 
     @Override
-    public List<String> findWords(String type, final String prefixToFind, final int max) {
+    public List<String> findWords(String dictionaryName, final String prefixToFind, final int max) {
         Validate.isTrue(max <= MAX_COUNT);
         String prefix = prefixToFind.toLowerCase();
 
         List<String> results = new ArrayList<String>();
 
-        Long start = getDictionary(type).rank(prefix);
+        Long start = getDictionary(dictionaryName).rank(prefix);
 
         //if start is null then check if this is a complete word and try to find it
         if (start == null) {
-            start = getDictionary(type).rank(prefix + END_TOKEN);
+            start = getDictionary(dictionaryName).rank(prefix + END_TOKEN);
         }
 
         LOGGER.info("Rank of prefix [{}] was [{}]", prefix, start);
 
         if (start != null) {
             while (true) {
-                Set<String> rangeRecs = getDictionary(type).range(start, start + MAX_TRANS_UNIT - 1);
+                Set<String> rangeRecs = getDictionary(dictionaryName).range(start, start + MAX_TRANS_UNIT - 1);
 
                 start += MAX_TRANS_UNIT;
 

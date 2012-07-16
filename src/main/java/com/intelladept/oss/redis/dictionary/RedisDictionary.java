@@ -13,9 +13,9 @@ public interface RedisDictionary {
 
     String DEFAULT_DICTIONARY = "dflt";
 
-    void addWord(String type, String wordToSave);
+    void addWord(String dictionaryName, String wordToSave);
 
-    List<String> findWords(String type, String prefix);
+    List<String> findWords(String dictionaryName, String prefix);
 
-    List<String> findWords(String type, String prefixToFind, int max);
+    List<String> findWords(String dictionaryName, String prefixToFind, int max);
 }

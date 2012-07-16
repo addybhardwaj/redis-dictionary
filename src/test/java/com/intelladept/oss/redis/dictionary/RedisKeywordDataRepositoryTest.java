@@ -11,10 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -40,11 +37,8 @@ public class RedisKeywordDataRepositoryTest extends AbstractRepositoryTest {
         stringKeywordAndIdExtractor = new KeywordAndIdExtractor<String>() {
 
             @Override
-            public Set<String> extractKeywords(String data) {
-                String[] split = data.split(" ");
-                LOGGER.info("Keywords [{}]", split);
-
-                return new HashSet<String>(Arrays.asList(split));
+            public String extractKeywords(String data) {
+                return data;
             }
 
             @Override
@@ -77,7 +71,7 @@ public class RedisKeywordDataRepositoryTest extends AbstractRepositoryTest {
     public void testIndexDataByKeywords() throws Exception {
         setupTestData();
 
-        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "ba");
+        List<String> ids = redisKeywordDataRepository.findDataByPhrase("tmp", "ba");
         LOGGER.info("ids found for ba [{}]", ids);
         assertEquals(2, ids.size());
 
@@ -87,7 +81,7 @@ public class RedisKeywordDataRepositoryTest extends AbstractRepositoryTest {
     public void testIndexDataByKeywordsMultiple() throws Exception {
         setupTestData();
 
-        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "ba", "fo");
+        List<String> ids = redisKeywordDataRepository.findDataByPhrase("tmp", "ba fo");
         LOGGER.info("ids found for ba and fo [{}]", ids);
         assertEquals(1, ids.size());
 
@@ -97,7 +91,7 @@ public class RedisKeywordDataRepositoryTest extends AbstractRepositoryTest {
     public void testIndexDataByCompleteKeyword() throws Exception {
         setupTestData();
 
-        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "bar");
+        List<String> ids = redisKeywordDataRepository.findDataByPhrase("tmp", "bar");
         LOGGER.info("ids found for ba and fo [{}]", ids);
         assertEquals(2, ids.size());
     }
@@ -106,7 +100,16 @@ public class RedisKeywordDataRepositoryTest extends AbstractRepositoryTest {
     public void testIndexDataByCompleteKeywordsMultiple() throws Exception {
         setupTestData();
 
-        List<String> ids = redisKeywordDataRepository.findDataByKeywordPrefixes("tmp", "bar", "foo");
+        List<String> ids = redisKeywordDataRepository.findDataByPhrase("tmp", "bar foo");
+        LOGGER.info("ids found for ba and fo [{}]", ids);
+        assertEquals(1, ids.size());
+    }
+
+    @Test
+    public void testIndexDataByCompleteKeywordsMultipleWithMetaphone() throws Exception {
+        setupTestData();
+
+        List<String> ids = redisKeywordDataRepository.findDataByPhrase("tmp", "bar fu");
         LOGGER.info("ids found for ba and fo [{}]", ids);
         assertEquals(1, ids.size());
     }

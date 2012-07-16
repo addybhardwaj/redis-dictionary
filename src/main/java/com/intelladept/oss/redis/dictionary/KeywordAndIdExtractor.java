@@ -1,7 +1,5 @@
 package com.intelladept.oss.redis.dictionary;
 
-import java.util.Set;
-
 /**
  * Extracts keyword from the data provided.
  *
@@ -11,12 +9,12 @@ import java.util.Set;
 public interface KeywordAndIdExtractor<T> {
 
     /**
-     * Extracts all the keyword. Note: keywords should ideally not have spaces in them.
+     * Extracts all the keyword in a sentence.
      *
      * @param data
      * @return
      */
-    Set<String> extractKeywords(T data);
+    String extractKeywords(T data);
 
     /**
      * Extracts id from the data that will be used for indexing.
