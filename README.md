@@ -68,15 +68,14 @@ public CategoryKeywordAndIdExtractor implements KeywordAndIdExtractor<Category> 
 
 How to use this library in maven
 ------------------------
-
+### Maven dependency
 ```
 <dependency>
     <groupId>com.intelladept.oss.redis</groupId>
     <artifactId>redis-dictionary</artifactId>
-    <!-- Note: use the most recent version available -->
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
-
-maven repository which holds the artifacts
-https://repository-addy.forge.cloudbees.com/snapshot/
 ```
+**Note** - version `1.0.0-SNAPSHOT` and `1.0-SNAPSHOT` are deprecated at the moment. Please check the timestamp of the artifacts to determine the latest one. These old version will be deleted as soon as we figure out how to :)
+### Maven repository 
+`https://repository-addy.forge.cloudbees.com/snapshot/`
