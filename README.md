@@ -21,7 +21,7 @@ How to use this library in maven
     <groupId>com.intelladept.oss.redis</groupId>
     <artifactId>redis-dictionary</artifactId>
     <!-- Note: use the most recent version available -->
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 </dependency>
 
 maven repository which holds the artifacts

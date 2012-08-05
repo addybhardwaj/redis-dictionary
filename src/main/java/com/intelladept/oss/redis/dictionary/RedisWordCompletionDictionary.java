@@ -18,6 +18,7 @@ import java.util.Set;
  * Implements Word prefix dictionary for auto completion.
  *
  * @author Aditya Bhardwaj
+ * @see {http://antirez.com/post/autocomplete-with-redis.html}
  */
 @Named
 public class RedisWordCompletionDictionary implements RedisDictionary {
