@@ -1,17 +1,70 @@
 redis-dictionary
 ================
 
-Provides a mechanism to build word dictionary based on data sets and ability to search the data set by words and partial words appearing in the set.
+Implements basic word lookup mechanism using redis as the indexing engine.  This implementation has been inspired by the following article http://antirez.com/post/autocomplete-with-redis.html
 
-For instance, if the data set include category names (string), it would be broken down into individual words and indexed.
-After categories are indexed, they can be searched by words in the category name or partial words in the categories.
-####Example:
-* Category: Baby and toddler
-* Words indexed: (baby), (and), (toddler)
-* Example search keywords: (b), (ba), (baby), (a), etc
+Summary
+-------
+This library provides a mechanism to index and lookup data based on keywords extracted from the data. At the heart of this library are word dictionaries which are used to index the data based on keywords extracted from the data. These dictionaries can then be used to lookup data based on related keywords. Currently implemented word dictionaries are:
+* Word completion dictionary : based on partial or full keywords it provides a list of keywords (complete) stored against indexed data. For instance if keyword **kitty** was stored then it can be lookup using partial word i.e. ** ki**, **kit**, etc. (starts with partern is used)                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+* Metaphone dictionary (sounds like) : indexes words by their Metaphone value. This allows mistyped words to be looked up easily i.e. if *cat* was indexed, it can be lookup by *kat*, *kit*, etc. This uses apache codec library which provides Metaphone calculation.
 
-How the category names are broken down is customisable by using **KeywordAndIdExtractor.java** interface implementation. This can be used to filter out
-join words like and, a, if, etc
+On top of the word dictionaries, the library provides a lightweight search service implementation `RedisKeywordDataRepository` which implements interface `SearchableKeywordDataRepository`. This implementation handles the splitting of words from the phrase provided for indexing. It is able to filter out join characters like `.` `(` etc. 
+
+Usage
+--------
+In this example we would want to index a list of category objects represented Category domain object that consists of id, name and description. 
+
+```
+public class Category {
+    private String id;
+    private String name;
+    private String description;
+    
+    ... getter and setters ...
+}
+```
+
+1. Firstly, implement a `KeywordAndIdExtractor` which will be required for indexing data. 
+```
+public CategoryKeywordAndIdExtractor implements KeywordAndIdExtractor<Category> {
+
+    @Override
+    public String extractKeywords(Category data) {
+        StringBuilder sb = new StringBuilder(data.getName());
+        sb.append(" ").append(data.getDescription());
+        
+        return sb.toString();
+    }
+
+    @Override
+    public String extractId(Category data) {
+        return data.getId();
+    }         
+    ...
+```
+2. Configure Redis instance and load the spring bean configuration : Unit test `RedisKeywordDataRepositoryTest` provides spring way of setting the properties. Example properties are provided at `test/resources/test-repository.properties`. **Note**: these properties are not provided by PropertyPlaceholderConfigurer but by properties bean named `repo`
+3. Now start indexing
+```
+    @Inject
+    private RedisKeywordDataRepository redisKeywordDataRepository;
+
+    ....
+    
+    public void storeCategory(Category category) {
+        //store category object in data store ...
+        //now index the category
+        redisKeywordDataRepository.indexDataByKeywords("categoryIndex", new CategoryKeywordAndIdExtractor(), category);
+    }
+```
+4. Search the indexed categories
+```    
+    public List<String> searchCategories(String phrase) {
+        //returns category ids
+        return redisKeywordDataRepository.indexDataByKeywords("categoryIndex", phrase);
+    }
+```
+
 
 How to use this library in maven
 ------------------------
