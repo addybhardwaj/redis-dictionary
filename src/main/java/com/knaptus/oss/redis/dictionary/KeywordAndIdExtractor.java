@@ -1,4 +1,4 @@
-package com.intelladept.oss.redis.dictionary;
+package com.knaptus.oss.redis.dictionary;
 
 /**
  * Extracts keyword from the data provided.

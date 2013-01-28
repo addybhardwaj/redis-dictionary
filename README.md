@@ -71,7 +71,7 @@ How to use this library in maven
 ### Maven dependency
 ```
 <dependency>
-    <groupId>com.intelladept.oss.redis</groupId>
+    <groupId>com.knaptus.oss.redis</groupId>
     <artifactId>redis-dictionary</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>

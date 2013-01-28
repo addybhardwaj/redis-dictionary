@@ -1,4 +1,4 @@
-package com.intelladept.oss.redis.dictionary;
+package com.knaptus.oss.redis.dictionary;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
@@ -33,14 +33,14 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
 
     /**
      * TODO: cache the zset objects and lazily initial them.
-     * 
+     *
      * @param dictionaryName
      * @return
      */
     private RedisZSet<String> getDictionary(String dictionaryName) {
         return new DefaultRedisZSet<String>(DICT + "compl:" + dictionaryName, stringRedisTemplate);
     }
-    
+
 
     @Override
     public void addWord(String dictionaryName, final String wordToSave) {
@@ -117,7 +117,7 @@ public class RedisWordCompletionDictionary implements RedisDictionary {
         }
         return results;
     }
-    
+
     public void setStringRedisTemplate(RedisTemplate stringRedisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
     }

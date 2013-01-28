@@ -1,4 +1,4 @@
-package com.intelladept.oss.redis.dictionary;
+package com.knaptus.oss.redis.dictionary;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.intelladept.oss.redis.dictionary.config;
+package com.knaptus.oss.redis.dictionary.config;
 
 import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Value;

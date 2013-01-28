@@ -7,7 +7,7 @@
         </layout>
     </appender>
 
-    <logger name="com.intelladept.oss">
+    <logger name="com.knaptus.oss">
         <level value="debug"/>
     </logger>
 

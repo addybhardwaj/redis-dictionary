@@ -1,4 +1,4 @@
-package com.intelladept.oss.redis.dictionary;
+package com.knaptus.oss.redis.dictionary;
 
 import org.apache.commons.codec.language.Metaphone;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,7 +34,7 @@ public class MetaphoneRedisDictionary implements RedisDictionary {
     public MetaphoneRedisDictionary() {
         metaphone = new Metaphone();
     }
-    
+
     @Override
     public void addWord(String dictionaryName, String wordToSave) {
         String metaphoneOfWord = metaphone.metaphone(wordToSave);

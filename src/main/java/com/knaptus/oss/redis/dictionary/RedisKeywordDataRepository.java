@@ -1,4 +1,4 @@
-package com.intelladept.oss.redis.dictionary;
+package com.knaptus.oss.redis.dictionary;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
@@ -33,7 +33,7 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
 
     @Inject
     private PhraseSplitter phraseSplitter;
-    
+
     private RedisDictionary redisDictionary;
 
     private RedisAtomicLong tempSetKeyCounter;
@@ -55,22 +55,22 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
     private Set<String> getSetByKeyword(String type, String keyword) {
         return new DefaultRedisSet<String>(getKeyForKeyword(type, keyword), stringRedisTemplate);
     }
-    
+
     @Override
     public <T> void indexDataByKeywords(String dictionaryName, KeywordAndIdExtractor<T> keywordAndIdExtractor, T data) {
         String keywordPhrase = keywordAndIdExtractor.extractKeywords(data);
         Set<String> keywords = phraseSplitter.cleanseAndSplitPhrase(keywordPhrase, false);
-        
+
         if (keywords != null) {
             for(String keyword : keywords) {
                 getSetByKeyword(dictionaryName, keyword).add(keywordAndIdExtractor.extractId(data));
-                
+
                 redisDictionary.addWord(dictionaryName, keyword);
             }
         }
 
     }
-    
+
     @Override
     public List<String> findDataByPhrase(String dictionaryName, String phrase) {
         return findDataByKeywordPrefixes(dictionaryName, phraseSplitter.cleanseAndSplitPhrase(phrase, true));
@@ -78,7 +78,7 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
 
     private List<String> findDataByKeywordPrefixes(String dictionaryName, Set<String> keywords) {
         List<String> resultDataIds = new ArrayList<String>();
-        
+
         if(keywords != null) {
             //temp redis key prefix to be used to store results for aggregation
             StringBuilder tmpKeyPrefix = new StringBuilder(TEMP_PREFIX)
@@ -95,7 +95,7 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
                     tmpResultSetAllKeys.add(tmpResultSetKey);
                 }
             }
-            
+
             if(tmpResultSetAllKeys.size() == 1) {
                 resultDataIds.addAll(stringRedisTemplate.opsForSet().members(tmpResultSetAllKeys.get(0)));
             } else if(tmpResultSetAllKeys.size() > 1) {
@@ -141,7 +141,7 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
 
     private List<String> buildSetKeys(String dictionaryName, List<String> resultWords) {
         List<String> resultWordsSetKeys = new ArrayList<String>();
-        
+
         if(CollectionUtils.isNotEmpty(resultWords)) {
             for(String resultWord : resultWords) {
                 resultWordsSetKeys.add(getKeyForKeyword(dictionaryName, resultWord));
@@ -151,12 +151,12 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
     }
 
     private static class AggregatingRedisDictionary implements RedisDictionary {
-        
+
         private List<RedisDictionary> redisDictionaries;
-        
+
         public AggregatingRedisDictionary(List<RedisDictionary> redisDictionaries) {
             Validate.notNull(redisDictionaries);
-            this.redisDictionaries = redisDictionaries;    
+            this.redisDictionaries = redisDictionaries;
         }
 
         @Override
@@ -169,11 +169,11 @@ public class RedisKeywordDataRepository implements SearchableKeywordDataReposito
         @Override
         public List<String> findWords(String dictionaryName, String searchKeyword) {
             List<String> results = new ArrayList<String>();
-            
+
             for(RedisDictionary redisDictionary : redisDictionaries) {
                 results.addAll(redisDictionary.findWords(dictionaryName, searchKeyword));
             }
-            
+
             return results;
         }
 

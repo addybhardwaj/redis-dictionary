@@ -1,4 +1,4 @@
-package com.intelladept.oss.redis.dictionary.config;
+package com.knaptus.oss.redis.dictionary.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import redis.clients.jedis.JedisPoolConfig;
  */
 @Configuration
 @ComponentScan(basePackages = {
-        "com.intelladept.oss.redis.dictionary"
+        "com.knaptus.oss.redis.dictionary"
 })
 public class RepositoryConfiguration {
 
@@ -60,7 +60,7 @@ public class RepositoryConfiguration {
         redisConnectionFactory.setPoolConfig(poolConfig());
         return redisConnectionFactory;
     }
-    
+
     @Bean
     public JedisPoolConfig poolConfig() {
     	JedisPoolConfig poolConfig = new JedisPoolConfig();

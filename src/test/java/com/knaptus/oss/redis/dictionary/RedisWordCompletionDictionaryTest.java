@@ -1,6 +1,6 @@
-package com.intelladept.oss.redis.dictionary;
+package com.knaptus.oss.redis.dictionary;
 
-import com.intelladept.oss.redis.dictionary.config.RepositoryConfiguration;
+import com.knaptus.oss.redis.dictionary.config.RepositoryConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ import static junit.framework.Assert.*;
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
 @ActiveProfiles("test")
 public class RedisWordCompletionDictionaryTest extends AbstractRepositoryTest {
-    
+
     @Inject
     private RedisWordCompletionDictionary redisWordCompletionDictionary;
 
